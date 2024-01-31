@@ -11,16 +11,29 @@
           <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="text-end"><button class="btn btn-outline-dark px-5 mt-2">LOGIN/REGISTER</button></div>
+    <% if(req.isAuthenticated()){ %>
+        <div class=" d-flex m-3">
+            <div></div>
+            <div><img class="img-thumbnail mx-3" src="<%= req.user.profilePicture %>" alt="" width="40px" height="40px"><%= req.user.displayName %></div>
+            <!-- <div class="ms-2"><a href="#" class="btn btn-outline-danger">LOGOUT</a></div> -->
+            <div class="ms-2"><form action="/auth/logout" method="post"><button class="btn btn-outline-danger">LOGOUT</button></form></div>
+        </div>
+    <%}else{ %>
+        <!-- <div class=""><a href="/auth/google" class="btn btn-outline-dark px-5 mt-2">Login with Google <img src="img/google-icon.png" alt="" width="40px" height="40px"></a></div> -->
+    <%} %>
     <h1 class="h1 text-center mt-5">QuickBits</h1>
     <div class="container-fluid display-4 p-5 text-center">Send Bitcoin and crypto to your friends by their Emails</div>
     <div class="container">
-        <div class="d-flex flex-wrap justify-content-around">
-            <a href="#" class="btn btn-outline-dark btn-lg flex-fill m-3">Balance $1,208</a>
-            <a href="#" class="btn btn-outline-primary btn-lg flex-fill m-3">Deposit</a>
-            <a href="#" class="btn btn-outline-primary btn-lg flex-fill m-3">Withdraw</a>
-        </div>
-        <a href="#" class="btn btn-warning btn-lg flex-fill m-3 w-100">Send</a>
+        <% if(req.isAuthenticated()){ %>
+            <div class="d-flex flex-wrap justify-content-around">
+                <a href="#" class="btn btn-outline-dark btn-lg flex-fill m-3">Balance $1,208</a>
+                <a href="#" class="btn btn-outline-primary btn-lg flex-fill m-3">Deposit</a>
+                <a href="#" class="btn btn-outline-primary btn-lg flex-fill m-3">Withdraw</a>
+            </div>
+            <% }else{ %>
+                <div class=""><a href="/auth/google" class="btn  btn-dark px-5 mt-2 w-100">Login with Google <img src="img/google-icon.png" alt="" width="40px" height="40px"></a></div>
+            <%} %>
+        <a href="#" class="btn btn-warning btn-lg flex-fill mt-2 w-100">Send</a>
     </div>
 </body>
 </html>
