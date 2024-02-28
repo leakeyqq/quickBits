@@ -1,7 +1,13 @@
 var passport = require('passport')
-var GoogleStrategy = require('passport-google-oauth2' ).Strategy;
+var GoogleStrategy = require('passport-google-oauth2' ).Strategy
+
 const User = require('../models/user')
+const UserWallet = require('../models/user-wallet')
+const InternalAddress = require('../models/internal-addresses')
+
 const config = require('config')
+const HDKey = require('hdkey')
+const EthereumjsUtil = require('ethereumjs-util')
 
 const GOOGLE_CLIENT_ID = config.get('google-oauth.client_id')
 const GOOGLE_CLIENT_SECRET = config.get('google-oauth.client_secret')
@@ -28,7 +34,8 @@ passport.use(new GoogleStrategy({
                     joinedOn: new Date() 
                 })
                 return user.save()
-                    .then((user) => {
+                    .then(async (user) => {
+                     await generateNewUserWallet(user)
                      done(null, user)
                     }
                   )
@@ -51,3 +58,42 @@ passport.deserializeUser(function(id,done){
         })
         .catch(err=> done(err))
 })
+async function generateNewUserWallet(user){
+    let newAddressDerivationPath
+    const lastAddressDerived = await InternalAddress.findOne().sort('-derivationPath').exec()
+    
+    if(lastAddressDerived){
+        newAddressDerivationPath = lastAddressDerived.derivationPath + 1
+    }else{
+        newAddressDerivationPath = 0
+    }
+
+    const xprv = config.get('hotwallet.xprv')
+    const hdkey = HDKey.fromExtendedKey(xprv)
+    const childAccount = hdkey.deriveChild(newAddressDerivationPath)
+    // Generate address from pub key
+    const addressBuffer = EthereumjsUtil.pubToAddress(Buffer.from(childAccount.publicKey, 'hex'), true)
+    const child_address = EthereumjsUtil.toChecksumAddress('0x' + addressBuffer.toString('hex'))
+    try {
+
+        let internalAddress = new InternalAddress({
+            address: child_address,
+            parentWallet: config.get('hotwallet.walletName'),
+            derivationPath: newAddressDerivationPath
+        })
+        internalAddress = await internalAddress.save()
+
+        let userWallet = new UserWallet({
+            userID: user.id,
+            depositAddress: child_address.toLowerCase(),
+            'balance.btc': 0,
+            'balance.bnb': 0,
+            'balance.usdt': 0
+        })
+        userWallet = await userWallet.save()
+
+    } catch (error) {
+        console.error(error)
+    }
+    
+}

@@ -10,15 +10,20 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "axios": "^1.6.7",
+    "body-parser": "^1.20.2",
     "config": "^3.3.10",
     "dotenv": "^16.4.0",
     "ejs": "^3.1.9",
+    "ethereumjs-util": "^7.1.5",
     "express": "^4.18.2",
     "express-session": "^1.18.0",
+    "hdkey": "^2.1.0",
     "mongoose": "^8.1.1",
     "passport": "^0.7.0",
     "passport-google-oauth2": "^0.2.0",
-    "path": "^0.12.7"
+    "path": "^0.12.7",
+    "web3": "^4.5.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.3"

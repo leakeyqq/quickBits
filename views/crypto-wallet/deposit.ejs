@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deposit - QuickBits</title>
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Latest compiled JavaScript -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <form action="#" method="post" class="container mt-5">
+        <div class="display-6 mb-3">Deposit</div>
+        <div class="form-group mb-3">
+            <label for="coinToDeposit" class="form-label">Select coin to deposit</label>
+            <select name="coinToDeposit" id="coinToDeposit" class="form-select">
+                <option value="BTC">Bitcoin - BTC</option>
+                <option value="BNB">Binance Coin - BNB</option>
+                <option value="USDT">Tether - USDT</option>
+            </select>
+        </div>
+        <div class="form-group mb-3">
+            <label for="network" class="form-label">Select network to use</label>
+            <select name="network" id="network" class="form-select" >
+                <option value="bep20">Binance smart chain - BEP20</option>
+            </select>
+        </div>
+
+        <div class="text-primary">Send crypto to this address  <b>OR</b> Scan the QR code</div><br>
+        <code class="fs-5">0xD2C0D91c04D342C6abEB27d0889C77c118de06B6</code>
+
+        
+    <div class="m-0 p-0">
+
+        <!-- QR code -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
+        <canvas id="qrcode"></canvas>
+        <script type="text/javascript">
+        new QRious({element: document.getElementById("qrcode"), value: "0xD2C0D91c04D342C6abEB27d0889C77c118de06B6"});
+        </script>
+
+
+        <canvas id="qrcode-2"></canvas>
+        <script type="text/javascript">
+        var qrcode = new QRious({
+        element: document.getElementById("qrcode-2"),
+        background: '#ffffff',
+        backgroundAlpha: 1,
+        foreground: '#5868bf',
+        foregroundAlpha: 1,
+        level: 'H',
+        padding: 0,
+        size: 128,
+        value: website
+        });
+    </script>
+  </div>
+    </form>
+
+</body>
+</html>
