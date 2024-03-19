@@ -56,8 +56,12 @@ const withdrawAsset = async(req,res)=>{
         const tickerSymbol_in_upperCase = tickerSymbol.toUpperCase()
         if(tickerSymbol_in_upperCase == 'BNB'){
             const transactionHash = await withdraw_BNB(req)
-            console.log(transactionHash)
             // Update userwallet balance
+            await update_userWallet_afterWithdrawal(req, totalToDeduct, transactionHash)
+            res.redirect('/crypto-wallet/balance')
+        }else{
+            // ERC20 token withdrawal
+            const transactionHash = await withdraw_erc20token(req)
             await update_userWallet_afterWithdrawal(req, totalToDeduct, transactionHash)
             res.redirect('/crypto-wallet/balance')
         }
@@ -180,6 +184,38 @@ async function withdraw_BNB(req){
             throw new Error('transaction failed ', error)
         })
     return gottenHash
+}
+async function withdraw_erc20token(req){
+    const tickerSymbol_in_upper = req.params.tickerSymbol.toUpperCase()
+    const tickerSymbol_lower = req.params.tickerSymbol.toLowerCase()
+    try {
+        
+        const tokenAddress = config.get(`test-tokens.${tickerSymbol_in_upper}`)
+    
+        const toAddress = req.body.receiver
+        const amount = web3.utils.toWei(req.body.amountToWithdraw, 'ether')
+        const minABI = require('./../config/minABI.json')
+    
+        const options = {
+            gas: config.get('crypto.bscscan.gas-limit'),
+            gasPrice: web3.utils.toWei(config.get('crypto.bscscan.gas-price'), 'Gwei'),
+            from: account[0].address
+        }
+    
+        const send_token = new web3.eth.Contract(minABI, tokenAddress)
+        let gottenHash 
+        await send_token.methods.transfer(toAddress, amount).send(options)
+            .on('transactionHash', (txHash)=>{
+                gottenHash = txHash
+            })
+            .on('error', (error)=>{
+                throw new Error(error)
+            })
+        return gottenHash
+
+} catch (error) {
+    console.error('Error in withdrawing: ', error)
+}
 }
 async function update_userWallet_afterWithdrawal(req, totalToDeduct, txHash){
     const userID = req.user.id
