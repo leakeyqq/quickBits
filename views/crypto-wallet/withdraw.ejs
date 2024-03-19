@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Withdraw - QuickBits</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <form action="/crypto-wallet/withdraw" method="post" class="mt-5">
+            <div class="h3 mb-3">Withdraw <%= tickerSymbol %> <img src="/img/crypto-icons/<%= tickerSymbol %>.png" height="40px" width="40px" alt=""></div>
+
+            <div class="form-group mb-3">
+                <label for="tokenBalance" class="form-label">Asset balance</label>
+                <input type="text" id="tokenBalance" name="tokenBalance" value="<%= balance %>" class="form-control" disabled>
+            </div>
+            <div class="form-group mb-3">
+                <label for="amountToWithdraw" class="form-label">Amount to withdraw</label>
+                <input type="text" class="form-control" name="amountToWithdraw" id="amountToWithdraw" placeholder="Enter amount to withdraw">
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="receiver" class="form-label">Receiver address</label>
+                <input type="text" id="receiver" name="receiver" class="form-control" placeholder="Paste receiver address">
+            </div>
+
+            <div class="form-group mb-3">
+                <label for="fee" class="form-label">Transaction fee</label>
+                <div class="input-group">
+                    <span class="input-group-text"><%= tickerSymbol %></span>
+                    <input type="text" id="fee" name="fee" class="form-control" value="<%= transaction_fee %>" disabled>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary w-100 p-3">Withdraw</button>
+        </form>
+    </div>
+</body>
+</html>

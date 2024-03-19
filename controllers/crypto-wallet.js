@@ -15,6 +15,30 @@ const getDepositPage = async(req,res)=>{
     const depositAddress = userWallet.depositAddress
     res.render('crypto-wallet/deposit', {tickerSymbol, depositAddress})
 }
+const getWithdrawalPage = async(req,res)=>{
+    const userID = req.user.id
+    const tickerSymbol = req.params.tickerSymbol
+    const tickerSymbol_lowercase = tickerSymbol.toLowerCase()
+    let transaction_fee
+    const userWallet = await UserWallet.findOne({userID: userID})
+
+    const balance = userWallet.balance[tickerSymbol_lowercase]
+
+    switch(tickerSymbol) {
+        case 'BTC':
+            transaction_fee = 0.0000016
+          break;
+        case 'BNB':
+            transaction_fee = 0.00019
+          break;
+          case 'USDT':
+            transaction_fee = 0.1
+            break;
+        default:
+            transaction_fee = 0
+      }
+    res.render('crypto-wallet/withdraw', {tickerSymbol, transaction_fee, balance})
+}
 const moralis_incoming_transaction = async(req, res)=>{
     const blockdata = req.body
 
@@ -96,4 +120,4 @@ async function handleNativeTransfers(transactions){
         }
     }   
 }
-module.exports = { getBalance, getDepositPage, moralis_incoming_transaction }
+module.exports = { getBalance, getDepositPage, moralis_incoming_transaction, getWithdrawalPage }
