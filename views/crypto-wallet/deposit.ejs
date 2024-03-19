@@ -11,24 +11,23 @@
 </head>
 <body>
     <form action="#" method="post" class="container mt-5">
-        <div class="display-6 mb-3">Deposit</div>
+        <div class="lead fs-2 mb-3">Deposit</div>
         <div class="form-group mb-3">
-            <label for="coinToDeposit" class="form-label">Select coin to deposit</label>
-            <select name="coinToDeposit" id="coinToDeposit" class="form-select">
+            <label class="form-label fs-5">Asset to deposit</label>
+            <!-- <select name="coinToDeposit" id="coinToDeposit" class="form-select">
                 <option value="BTC">Bitcoin - BTC</option>
                 <option value="BNB">Binance Coin - BNB</option>
                 <option value="USDT">Tether - USDT</option>
-            </select>
+            </select> -->
+            <div><b><%= tickerSymbol %></b> <img src="/img/crypto-icons/<%= tickerSymbol %>.png" alt="" height="30px" width="30px"></div>
         </div>
         <div class="form-group mb-3">
-            <label for="network" class="form-label">Select network to use</label>
-            <select name="network" id="network" class="form-select" >
-                <option value="bep20">Binance smart chain - BEP20</option>
-            </select>
+            <label for="network" class="form-label fs-5">Network to use</label>
+            <div><b>BNB Smartchain (BEP20)</b> <img src="/img/crypto-icons/bnb.png" height="20px" width="20px" alt=""></div>
         </div>
 
         <div class="text-primary">Send crypto to this address  <b>OR</b> Scan the QR code</div><br>
-        <code class="fs-5">0xD2C0D91c04D342C6abEB27d0889C77c118de06B6</code>
+        <code class="fs-5"><%= depositAddress %></code>
 
         
     <div class="m-0 p-0">
@@ -37,7 +36,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/qrious/4.0.2/qrious.min.js"></script>
         <canvas id="qrcode"></canvas>
         <script type="text/javascript">
-        new QRious({element: document.getElementById("qrcode"), value: "0xD2C0D91c04D342C6abEB27d0889C77c118de06B6"});
+        new QRious({element: document.getElementById("qrcode"), value: "<%= depositAddress %>"});
         </script>
 
 

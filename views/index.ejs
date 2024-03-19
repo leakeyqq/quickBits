@@ -22,13 +22,11 @@
         <!-- <div class=""><a href="/auth/google" class="btn btn-outline-dark px-5 mt-2">Login with Google <img src="img/google-icon.png" alt="" width="40px" height="40px"></a></div> -->
     <%} %>
     <h1 class="h1 text-center mt-5">QuickBits</h1>
-    <div class="container-fluid display-4 p-5 text-center">Send Bitcoin and crypto to your friends by their Emails</div>
+    <div class="container-fluid display-4 p-5 text-center">Send Bitcoin and crypto to people by their Emails</div>
     <div class="container">
         <% if(req.isAuthenticated()){ %>
             <div class="d-flex flex-wrap justify-content-around">
-                <a href="crypto-wallet/balance" class="btn btn-outline-dark btn-lg flex-fill m-3">Balance</a>
-                <a href="crypto-wallet/deposit" class="btn btn-outline-primary btn-lg flex-fill m-3">Deposit</a>
-                <a href="#" class="btn btn-outline-primary btn-lg flex-fill m-3">Withdraw</a>
+                <a href="crypto-wallet/balance" class="btn btn-dark btn-lg flex-fill m-3">Wallet Balance</a>
             </div>
             <% }else{ %>
                 <div class=""><a href="/auth/google" class="btn  btn-dark px-5 mt-2 w-100">Login with Google <img src="img/google-icon.png" alt="" width="40px" height="40px"></a></div>

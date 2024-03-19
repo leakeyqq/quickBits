@@ -1,5 +1,6 @@
 var passport = require('passport')
 var GoogleStrategy = require('passport-google-oauth2' ).Strategy
+const Moralis = require('moralis').default
 
 const User = require('../models/user')
 const UserWallet = require('../models/user-wallet')
@@ -35,7 +36,8 @@ passport.use(new GoogleStrategy({
                 })
                 return user.save()
                     .then(async (user) => {
-                     await generateNewUserWallet(user)
+                     const userDepositAddress = await generateNewUserWallet(user)
+                     await add_address_to_moralis_stream(userDepositAddress)
                      done(null, user)
                     }
                   )
@@ -91,9 +93,17 @@ async function generateNewUserWallet(user){
             'balance.usdt': 0
         })
         userWallet = await userWallet.save()
+        return child_address
 
     } catch (error) {
         console.error(error)
     }
     
+}
+async function add_address_to_moralis_stream(address){
+
+    await Moralis.Streams.addAddress({
+    id: config.get('moralis.stream-id'),
+    address: address
+})
 }

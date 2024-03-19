@@ -5,7 +5,7 @@ const config = require('config')
 const mongoose = require('mongoose')
 const passport = require('passport')
 const session = require('express-session')
-
+const Moralis = require('moralis').default
 
 const indexRouter = require('./routes/index')
 const authRouter = require('./routes/auth')
@@ -26,11 +26,11 @@ app.use(passport.session())
 
 
 // Db connection
-mongoose.connect(config.get('mongodb.connection_string'),
-    {
-        useNewUrlParser: true, 
-        useUnifiedTopology: true
-    } )
+mongoose.connect(config.get('mongodb.connection_string'))
+
+Moralis.start({
+    apiKey: config.get('moralis.streams-api-key')
+})
 
 
  // Set view engine   
