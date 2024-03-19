@@ -63,6 +63,7 @@ const userWalletSchema = new mongoose.Schema({
         }
     }],
     withdrawals: [{
+        _id: false,
         ticker: {
             type: String,
             required: true
@@ -77,7 +78,7 @@ const userWalletSchema = new mongoose.Schema({
         },
         from:{
             type: String,
-            required: true
+            required: false
         },
         to: {
             type: String,
@@ -89,10 +90,6 @@ const userWalletSchema = new mongoose.Schema({
         },
         network_used: {
             type: String,
-            required: true
-        },
-        blockConfirmations: {
-            type: Number,
             required: true
         },
         transaction_status: {

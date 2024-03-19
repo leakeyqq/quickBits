@@ -9,7 +9,7 @@
 </head>
 <body>
     <div class="container">
-        <form action="/crypto-wallet/withdraw" method="post" class="mt-5">
+        <form action="/crypto-wallet/withdraw/<%= tickerSymbol %>" method="post" class="mt-5">
             <div class="h3 mb-3">Withdraw <%= tickerSymbol %> <img src="/img/crypto-icons/<%= tickerSymbol %>.png" height="40px" width="40px" alt=""></div>
 
             <div class="form-group mb-3">
