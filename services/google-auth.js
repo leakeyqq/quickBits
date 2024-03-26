@@ -5,6 +5,7 @@ const Moralis = require('moralis').default
 const User = require('../models/user')
 const UserWallet = require('../models/user-wallet')
 const InternalAddress = require('../models/internal-addresses')
+const SendTransfer = require('../models/send-transfers')
 
 const config = require('config')
 const HDKey = require('hdkey')
@@ -38,6 +39,7 @@ passport.use(new GoogleStrategy({
                     .then(async (user) => {
                      const userDepositAddress = await generateNewUserWallet(user)
                      await add_address_to_moralis_stream(userDepositAddress)
+                     await query_previous_transactions(user)
                      done(null, user)
                     }
                   )
@@ -106,4 +108,31 @@ async function add_address_to_moralis_stream(address){
     id: config.get('moralis.stream-id'),
     address: address
 })
+}
+async function query_previous_transactions(user){
+    try {
+        const sendAccount = await SendTransfer.findOne({userEmail: user.email})
+        if(sendAccount){
+            const incoming_received_transactions = sendAccount.received
+            incoming_received_transactions.forEach(async transaction => {
+                if(transaction.claimed == false){
+                    const tickerSymbol = transaction.tickerSymbol
+                    const amount = transaction.amount
+                    
+                    const updateObject = {}
+                    updateObject[`balance.${tickerSymbol}`] = amount
+        
+                    await UserWallet.updateOne({userID: user.id},
+                        {
+                            $inc: updateObject
+                        })
+                    
+                    transaction.claimed = true
+                    await sendAccount.save()
+                }
+            })
+        }   
+    } catch (error) {
+        console.error(error)
+    }
 }
