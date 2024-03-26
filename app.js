@@ -10,6 +10,7 @@ const Moralis = require('moralis').default
 const indexRouter = require('./routes/index')
 const authRouter = require('./routes/auth')
 const cryptoWalletRouter = require('./routes/crypto-wallet')
+const sendRouter = require('./routes/send-transfer')
 
 const app = express()
 app.use(bodyParser.json())
@@ -43,5 +44,6 @@ app.use(express.static(path.join(__dirname, 'public')))
 app.use('/',indexRouter)
 app.use('/auth', authRouter)
 app.use('/crypto-wallet', cryptoWalletRouter)
+app.use('/send', sendRouter)
 
 app.listen(config.get('host.port'),()=>console.info(`App now listening on port ${config.get('host.port')}`))
