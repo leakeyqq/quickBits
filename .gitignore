@@ -2,3 +2,4 @@
 .env
 /config
 /public/img
+/test

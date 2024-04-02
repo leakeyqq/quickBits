@@ -1,10 +1,14 @@
+const config = require('config')
 const mongoose = require('mongoose')
 const SendTransfer = require('./../models/send-transfers')
 const UserWallet = require('./../models/user-wallet')
 const User = require('./../models/user')
+const nodemailer = require('nodemailer')
+
 
 const sendForm = async(req,res)=>{
-    res.render('send/fill')
+    const sendWallet = await SendTransfer.findOne({userEmail: req.user.email})
+    res.render('send/fill', { sendWallet})
 }
 const transferAsset = async(req,res)=>{
     try {
@@ -30,7 +34,9 @@ const transferAsset = async(req,res)=>{
         }
         await update_sender_userWallet(senderID, tickerSymbol, amount_to_send)
 
-        res.redirect('/crypto-wallet/balance')
+        send_email_to_transaction_receiver(receiverEmail, senderEmail, amount_to_send, tickerSymbol)
+
+        res.redirect('/send')
        
     } catch (error) {
         console.error(error)
@@ -136,6 +142,34 @@ async function update_sender_userWallet(senderID, tickerSymbol, amount_to_send){
     } catch (error) {
         console.error(error)
     }
+}
+
+async function send_email_to_transaction_receiver(receiverEmail, senderEmail, amount_to_send, tickerSymbol){
+    const email = config.get('email.email-string')
+    const email_pswd = config.get('email.pswd')
+
+    let transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+            user: email,
+            pass: email_pswd
+        }
+    })
+
+    let mailOptions = {
+        from: '"QUICKBITS APP" <' + email + '>',
+        to: receiverEmail,
+        subject: `RECEIVED ${amount_to_send} ${tickerSymbol.toUpperCase()}`,
+        text: `You have received ${amount_to_send} ${tickerSymbol.toUpperCase()} from ${senderEmail}. Sigup/Login to QuickBits app to access your funds.`
+    }
+
+    transporter.sendMail(mailOptions, function(error, info){
+        if(error){
+            console.error(error)
+        }else{
+            console.log('Email sent ', + info.response)
+        }
+    })
 }
 
 module.exports = { sendForm, getTokenBalance, transferAsset }
