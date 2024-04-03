@@ -13,7 +13,7 @@
     "axios": "^1.6.7",
     "body-parser": "^1.20.2",
     "config": "^3.3.10",
-    "dotenv": "^16.4.0",
+    "dotenv": "^16.4.5",
     "ejs": "^3.1.9",
     "ethereumjs-util": "^7.1.5",
     "express": "^4.18.2",

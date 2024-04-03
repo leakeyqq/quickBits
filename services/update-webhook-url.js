@@ -1,3 +1,4 @@
+require('dotenv').config()
 const Moralis = require('moralis').default
 const config = require('config')
 
@@ -6,14 +7,14 @@ const config = require('config')
  */
 const runApp = async () => {
     await Moralis.start({
-        apiKey: config.get('moralis.streams-api-key')
+        apiKey: process.env.MORALIS_STREAMS_API_KEY
     })
 
 
 
     const response = await Moralis.Streams.update({
-        id: config.get('moralis.stream-id'),
-        webhookUrl: config.get('moralis.webhook-url'),
+        id: process.env.MORALIS_STREAM_ID,
+        webhookUrl: process.env.MORALIS_WEBHOOK_URL,
         description: "Changed webhook url"
     })
 

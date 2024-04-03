@@ -1,3 +1,4 @@
+require('dotenv').config()
 const Moralis = require('moralis').default
 const config = require('config')
 
@@ -7,11 +8,11 @@ const blockchain_network = [config.get('moralis.bnb-testnet-id')]
 
 const runApp = async () => {
     await Moralis.start({
-        apiKey: config.get('moralis.streams-api-key')
+        apiKey: process.env.MORALIS_STREAMS_API_KEY
     })
 
     const response = await Moralis.Streams.add({
-        webhookUrl: config.get('moralis.webhook-url'),
+        webhookUrl: process.env.MORALIS_WEBHOOK_URL,
         description: stream_description,
         tag: stream_tag,
         chains: blockchain_network ,

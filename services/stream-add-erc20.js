@@ -1,3 +1,4 @@
+require('dotenv').config()
 const Moralis = require('moralis').default
 const config = require('config')
 
@@ -6,13 +7,13 @@ const config = require('config')
  */
 const runApp = async () => {
     await Moralis.start({
-        apiKey: config.get('moralis.streams-api-key')
+        apiKey: process.env.MORALIS_STREAMS_API_KEY
     })
 
     const topic = "Transfer(address,address,uint256)"
 
     const response = await Moralis.Streams.update({
-        id: config.get('moralis.stream-id'),
+        id: process.env.MORALIS_STREAM_ID,
         abi: config.get('moralis.erc20-transfer-abi'),
         includeContractLogs: true,
         topic0: topic,

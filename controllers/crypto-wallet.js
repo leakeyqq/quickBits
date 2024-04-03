@@ -1,5 +1,6 @@
 const UserWallet = require('./../models/user-wallet')
 const { Web3 } = require('web3')
+require('dotenv').config()
 const config = require('config')
 const { check, validationResult } = require('express-validator')
 

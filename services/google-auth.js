@@ -1,3 +1,4 @@
+require('dotenv').config()
 var passport = require('passport')
 var GoogleStrategy = require('passport-google-oauth2' ).Strategy
 const Moralis = require('moralis').default
@@ -11,9 +12,9 @@ const config = require('config')
 const HDKey = require('hdkey')
 const EthereumjsUtil = require('ethereumjs-util')
 
-const GOOGLE_CLIENT_ID = config.get('google-oauth.client_id')
-const GOOGLE_CLIENT_SECRET = config.get('google-oauth.client_secret')
-const GOOGLE_CALLBACK_URL = config.get('google-oauth.redirect_uri')
+const GOOGLE_CLIENT_ID = process.env.GOOGLE_OAUTH_CLIENT_ID
+const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_OAUTH_CLIENT_SECRET
+const GOOGLE_CALLBACK_URL = process.env.GOOGLE_REDIRECT_URI
 
 passport.use(new GoogleStrategy({
     clientID:     GOOGLE_CLIENT_ID,
@@ -72,7 +73,7 @@ async function generateNewUserWallet(user){
         newAddressDerivationPath = 0
     }
 
-    const xprv = config.get('hotwallet.xprv')
+    const xprv = process.env.HOTWALLET_XPRV
     const hdkey = HDKey.fromExtendedKey(xprv)
     const childAccount = hdkey.deriveChild(newAddressDerivationPath)
     // Generate address from pub key
@@ -82,7 +83,7 @@ async function generateNewUserWallet(user){
 
         let internalAddress = new InternalAddress({
             address: child_address,
-            parentWallet: config.get('hotwallet.walletName'),
+            parentWallet: process.env.HOTWALLET_NAME,
             derivationPath: newAddressDerivationPath
         })
         internalAddress = await internalAddress.save()
@@ -105,7 +106,7 @@ async function generateNewUserWallet(user){
 async function add_address_to_moralis_stream(address){
 
     await Moralis.Streams.addAddress({
-    id: config.get('moralis.stream-id'),
+    id: process.env.MORALIS_STREAM_ID,
     address: address
 })
 }

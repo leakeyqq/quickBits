@@ -1,0 +1,48 @@
+{
+      "moralis": {
+        "bnb-mainnet-id": "0x38",
+        "bnb-testnet-id": "0x61",
+        "stream-tag": "QBitstest101",
+        "erc20-transfer-abi": [{
+          "anonymous": false,
+          "inputs": [
+              {
+                  "indexed": true,
+                  "name": "from",
+                  "type": "address"
+              },
+              {
+                  "indexed": true,
+                  "name": "to",
+                  "type": "address"
+              },
+              {
+                  "indexed": false,
+                  "name": "value",
+                  "type": "uint256"
+              }
+          ],
+          "name": "Transfer",
+          "type": "event"
+      }]
+      },
+      "crypto": {
+        "bscscan": {
+            "call-limit-per-sec": 5,
+            "gas-limit": 100000,
+            "gas-price": 5,
+            "transaction-fee-in-usd": 0.5
+        },
+
+        "web3-provider":{
+            "eth-testnet": "https://rpc.ankr.com/eth_sepolia",
+            "bsc": "https://rpc.ankr.com/bsc",
+            "bsc-testnet": "https://rpc.ankr.com/bsc_testnet_chapel"
+        }
+    },
+    "test-tokens": {
+      "DAI": "0xEC5dCb5Dbf4B114C9d0F65BcCAb49EC54F6A0867",
+      "USDT": "0x337610d27c682E347C9cD60BD4b3b107C9d34dDd",
+      "BUSD": "0xeD24FC36d5Ee211Ea25A80239Fb8C4Cfd80f12Ee"
+  }
+}

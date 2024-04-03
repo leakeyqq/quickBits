@@ -1,3 +1,4 @@
+require('dotenv').config()
 const config = require('config')
 const mongoose = require('mongoose')
 const SendTransfer = require('./../models/send-transfers')
@@ -145,8 +146,8 @@ async function update_sender_userWallet(senderID, tickerSymbol, amount_to_send){
 }
 
 async function send_email_to_transaction_receiver(receiverEmail, senderEmail, amount_to_send, tickerSymbol){
-    const email = config.get('email.email-string')
-    const email_pswd = config.get('email.pswd')
+    const email = process.env.EMAIL_TO_USE
+    const email_pswd = process.env.EMAIL_PASSWORD
 
     let transporter = nodemailer.createTransport({
         service: 'gmail',

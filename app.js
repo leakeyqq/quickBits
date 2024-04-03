@@ -1,5 +1,6 @@
 const express = require('express')
 var path = require('path')
+require('dotenv').config()
 const bodyParser = require('body-parser')
 const config = require('config')
 const mongoose = require('mongoose')
@@ -16,7 +17,7 @@ const app = express()
 app.use(bodyParser.json())
 
 app.use(session({
-    secret: config.get('session.session-secret'),
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {maxAge: 1000 * 60 * 60}     // Session to expire after 1 hour
@@ -27,10 +28,11 @@ app.use(passport.session())
 
 
 // Db connection
-mongoose.connect(config.get('mongodb.connection_string'))
+mongoose.connect(process.env.MONGODB_CONNECTION_STRING)
+
 
 Moralis.start({
-    apiKey: config.get('moralis.streams-api-key')
+    apiKey: process.env.MORALIS_STREAMS_API_KEY
 })
 
 
@@ -46,4 +48,4 @@ app.use('/auth', authRouter)
 app.use('/crypto-wallet', cryptoWalletRouter)
 app.use('/send', sendRouter)
 
-app.listen(config.get('host.port'),()=>console.info(`App now listening on port ${config.get('host.port')}`))
+app.listen(process.env.APP_RUNNING_PORT,()=>console.info(`App now listening on port ${process.env.APP_RUNNING_PORT}`))
