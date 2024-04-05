@@ -49,3 +49,5 @@ app.use('/crypto-wallet', cryptoWalletRouter)
 app.use('/send', sendRouter)
 
 app.listen(process.env.APP_RUNNING_PORT,()=>console.info(`App now listening on port ${process.env.APP_RUNNING_PORT}`))
+
+module.exports = app
