@@ -1,9 +1,9 @@
 {
     "installCommand": "npm install",
-    "builds":{
+    "builds":[{
       "src": "app.js",
       "use": "@now/node"
-    },
+    }],
     "routes": [
       {
         "src": "/(.*)",
