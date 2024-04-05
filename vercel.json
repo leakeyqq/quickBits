@@ -1,9 +1,13 @@
 {
     "installCommand": "npm install",
+    "builds":{
+      "src": "app.js",
+      "use": "@now/node"
+    },
     "routes": [
       {
         "src": "/(.*)",
-        "dest": "/"
+        "dest": "app.js"
       }
     ]
   }
