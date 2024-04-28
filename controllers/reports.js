@@ -1,6 +1,15 @@
 const mongoose = require('mongoose')
 const UserWallet = require('./../models/user-wallet')
 
+const pdf = require('pdf-creator-node')
+const fs = require('fs')
+
+const options = {
+    format: "A4",
+    orientation: "portrait",
+    border: "10mm"
+}
+const template = fs.readFileSync("./template/template.html", "utf-8")
 
 const reportForm = (req,res)=>{
     res.render('reports/generate-report')
@@ -36,10 +45,29 @@ const generate = async(req,res)=>{
 
         return withinDateRange && ((includeBTC && isBTC) || (includeBNB && isBNB) || (includeUSDT && isUSDT));
         })
+
+
+        const document = {
+            html: template,
+            data: {
+                deposits
+            },
+            path: "./generated-pdfs/deposits-report.pdf"
+        }
+        pdf.create(document, options).then((fileLocation) => {
+            console.log(fileLocation)
+            const pdfUrl = '/generated-pdfs/deposits-report.pdf'
+            res.redirect(pdfUrl)
+
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
         console.log(deposits)
     }
 
-    res.status(200).send('OK')
+    // res.status(200).send('OK')
 
 }
 module.exports = { reportForm, generate }

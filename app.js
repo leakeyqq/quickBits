@@ -15,6 +15,9 @@ const sendRouter = require('./routes/send-transfer')
 const reportRouter = require('./routes/reports')
 
 const app = express()
+
+app.use('/generated-pdfs', express.static('generated-pdfs'))
+
 app.use(bodyParser.json())
 
 app.use(session({
