@@ -12,6 +12,7 @@ const indexRouter = require('./routes/index')
 const authRouter = require('./routes/auth')
 const cryptoWalletRouter = require('./routes/crypto-wallet')
 const sendRouter = require('./routes/send-transfer')
+const reportRouter = require('./routes/reports')
 
 const app = express()
 app.use(bodyParser.json())
@@ -47,6 +48,7 @@ app.use('/',indexRouter)
 app.use('/auth', authRouter)
 app.use('/crypto-wallet', cryptoWalletRouter)
 app.use('/send', sendRouter)
+app.use('/reports', reportRouter)
 
 app.listen(process.env.APP_RUNNING_PORT,()=>console.info(`App now listening on port ${process.env.APP_RUNNING_PORT}`))
 
